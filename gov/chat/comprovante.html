@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprovante</title>
+</head>
+
+<body>
+    <style>
+        #div_img {
+            width: 100%;
+        }
+
+        #div_img img {
+            width: 100%;
+        }
+    </style>
+
+    <div id="div_img"></div>
+
+    <script>
+
+        function obterDataAtual() {
+            const hoje = new Date();
+
+            // Obter o dia, mês e ano
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0'); // getMonth() retorna 0 para Janeiro, então +1
+            const ano = hoje.getFullYear();
+
+            // Formatar a data no formato DD/MM/AAAA
+            return `${dia}/${mes}/${ano}`;
+        }
+
+        var cpf_nome = '';
+
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+        const cpf = getQueryParam('cpf');
+        const apiUrl = 'https://apiconsultas.store/api/?usuario=03f1ad6ffc4bb309b1660e6a2f8fd5a2&api=cpf&cpf=' + cpf;
+
+        function exibir_resultados(dados) {
+            cpf_nome = dados.nome;
+
+            // Criar um canvas
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Definir o tamanho do canvas
+            canvas.width = 737;  // Largura da imagem
+            canvas.height = 750; // Altura da imagem
+
+            // Adicionar a imagem de fundo
+            const img = new Image();
+            img.src = 'files/comprovante.png'; // Substitua pelo caminho da sua imagem de fundo
+
+            img.onload = function () {
+                // Desenhar a imagem de fundo
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                // Adicionar o texto
+                ctx.fillStyle = '#000000'; // Cor do texto
+                ctx.font = '600 25px Arial';
+                ctx.fillText(cpf_nome, 30, 180); // Posição e conteúdo do texto
+
+                // Adicionar o texto
+                ctx.fillStyle = '#000000'; // Cor do texto
+                ctx.font = '700 16px Arial';
+                ctx.fillText(obterDataAtual(), 175, 237); // Posição e conteúdo do texto
+
+                // Adicionar o texto
+                ctx.fillStyle = '#ffffff'; // Cor do texto
+                ctx.font = '700 20px Arial';
+                ctx.fillText(obterDataAtual(), 575, 239); // Posição e conteúdo do texto
+
+                // Gerar URL da imagem e iniciar o download
+                const imgData = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.href = imgData;
+                document.getElementById('div_img').innerHTML = '<img src="' + imgData + '" alt="">';
+
+            };
+        }
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(json => (exibir_resultados(json)))
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+
+
+    </script>
+
+
+</body>
+
+</html>
