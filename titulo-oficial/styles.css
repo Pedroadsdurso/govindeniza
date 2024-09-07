@@ -35,10 +35,8 @@ body {
 
 /* Estilo da imagem principal */
 .main-image {
-    max-width: 100%;
+    max-width: 40%;
     height: auto;
-    border-radius: 15px; /* Bordas arredondadas da imagem */
-    border: 5px solid #004d00; /* Borda verde escuro */
     margin-bottom: 20px; /* Espaço abaixo da imagem */
 }
 
