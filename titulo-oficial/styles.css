@@ -35,7 +35,7 @@ body {
 
 /* Estilo da imagem principal */
 .main-image {
-    max-width: 40%;
+    max-width: 30%;
     height: auto;
     margin-bottom: 20px; /* Espaço abaixo da imagem */
 }
